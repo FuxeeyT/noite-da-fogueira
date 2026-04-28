@@ -1,0 +1,176 @@
+[gd_scene load_steps=11 format=3 uid="uid://i7x8j2k3l4m5n"]
+
+[ext_resource type="Script" path="res://scripts/game_world.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://prefabs/player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://scripts/hud.gd" id="3_hud"]
+[ext_resource type="PackedScene" path="res://prefabs/bear.tscn" id="4_bear"]
+[ext_resource type="PackedScene" path="res://prefabs/raccoon.tscn" id="5_raccoon"]
+[ext_resource type="PackedScene" path="res://prefabs/collectible.tscn" id="6_item"]
+[ext_resource type="Texture2D" path="res://assets/images/forest_background.png" id="7_background"]
+[ext_resource type="PackedScene" path="res://prefabs/campfire.tscn" id="8_campfire"]
+[ext_resource type="Script" path="res://scripts/dialog_manager.gd" id="9_dialog"]
+
+[node name="GameWorld" type="Node2D"]
+script = ExtResource("1_script")
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(640, 360)
+texture = ExtResource("7_background")
+centered = true
+texture_filter = 1
+
+[node name="Campfire" parent="." instance=ExtResource("8_campfire")]
+position = Vector2(640, 360)
+scale = Vector2(0.75, 0.75)
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+position = Vector2(640, 500)
+scale = Vector2(1.5, 1.5)
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="Bear1" parent="Enemies" instance=ExtResource("4_bear")]
+position = Vector2(400, 200)
+scale = Vector2(2, 2)
+
+[node name="Raccoon1" parent="Enemies" instance=ExtResource("5_raccoon")]
+position = Vector2(800, 250)
+scale = Vector2(1.2, 1.2)
+
+[node name="Raccoon2" parent="Enemies" instance=ExtResource("5_raccoon")]
+position = Vector2(500, 150)
+scale = Vector2(1.2, 1.2)
+
+[node name="Items" type="Node2D" parent="."]
+
+[node name="Stick" parent="Items" instance=ExtResource("6_item")]
+position = Vector2(300, 200)
+scale = Vector2(1, 1)
+item_type = "stick"
+
+[node name="Log" parent="Items" instance=ExtResource("6_item")]
+position = Vector2(900, 300)
+scale = Vector2(1.2, 1.2)
+item_type = "log"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HUD" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_hud")
+mouse_filter = 2
+
+[node name="FireBar" type="ProgressBar" parent="CanvasLayer/HUD"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -150.0
+offset_top = 20.0
+offset_right = 150.0
+offset_bottom = 50.0
+grow_horizontal = 2
+value = 100.0
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/HUD/FireBar"]
+layout_mode = 0
+offset_top = -25.0
+offset_right = 300.0
+offset_bottom = 2.0
+text = "Vida da Fogueira"
+horizontal_alignment = 1
+mouse_filter = 2
+
+[node name="TimeLabel" type="Label" parent="CanvasLayer/HUD"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -200.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 50.0
+grow_horizontal = 0
+text = "Relógio: 00:00 AM"
+horizontal_alignment = 2
+mouse_filter = 2
+
+[node name="HealthLabel" type="Label" parent="CanvasLayer/HUD"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 150.0
+offset_bottom = 50.0
+text = "Vidas: 3"
+mouse_filter = 2
+
+[node name="ScoreLabel" type="Label" parent="CanvasLayer/HUD"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 50.0
+offset_right = 150.0
+offset_bottom = 80.0
+text = "Score: 0"
+mouse_filter = 2
+
+[node name="WoodInventoryLabel" type="Label" parent="CanvasLayer/HUD"]
+layout_mode = 0
+offset_left = 1050.0
+offset_top = 650.0
+offset_right = 1250.0
+offset_bottom = 680.0
+text = "Lenha: 0/5"
+mouse_filter = 2
+
+[node name="InventoryPanel" type="HBoxContainer" parent="CanvasLayer/HUD"]
+layout_mode = 0
+offset_left = 1050.0
+offset_top = 600.0
+offset_right = 1250.0
+offset_bottom = 650.0
+alignment = 1
+mouse_filter = 2
+
+[node name="PauseMenu" type="ColorRect" parent="CanvasLayer"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PauseMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -50.0
+offset_right = 100.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="ResumeButton" type="Button" parent="CanvasLayer/PauseMenu/VBoxContainer"]
+layout_mode = 2
+text = "Continuar"
+
+[node name="MenuButton" type="Button" parent="CanvasLayer/PauseMenu/VBoxContainer"]
+layout_mode = 2
+text = "Menu Principal"
+
+[node name="DialogManager" type="CanvasLayer" parent="."]
+script = ExtResource("9_dialog")
+
+[connection signal="pressed" from="CanvasLayer/PauseMenu/VBoxContainer/ResumeButton" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="CanvasLayer/PauseMenu/VBoxContainer/MenuButton" to="." method="_on_menu_pressed"]
