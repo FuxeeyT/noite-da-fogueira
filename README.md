@@ -16,6 +16,7 @@ O jogador assume o papel de Leo, um escoteiro que precisa manter sua fogueira ac
 - **Tela de Game Over:** Exibição de pontuação final e opção de reiniciar.
 - **Gerenciamento de Áudio:** Controle de volume integrado ao AudioServer do Godot.
 
+
 ## Controles
 - **WASD / Setas:** Movimentação
 - **Shift:** Correr (Consome Stamina)
